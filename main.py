@@ -2,11 +2,13 @@ import discord
 import random
 import os
 from discord.ext import commands
+from dotenv import load_dotenv
 
 # Create an instance of Intents
 intents = discord.Intents.default()
 intents.all()
 intents.message_content = True
+load_dotenv()
 
 # Create a bot instance with a command prefix and intents
 bot = commands.Bot(command_prefix='!', intents=intents)
@@ -40,9 +42,9 @@ async def on_message(message):
         elif user_message.lower() == "bye": 
             await message.channel.send(f'Bye {username}') 
         elif user_message.lower() == "tell me a joke": 
-            jokes = ["zzz"] 
+            jokes = ["1","2","3","4"] 
             await message.channel.send(random.choice(jokes)) 
 
-
 # Run the bot with your bot token
-bot.run('MTE5NzU0MzQ1OTI1MTMwMjQ1MA.GCaT6z.lqjCw5fWpwS9X_0whWlzfFl0-LUG_GdjrRrd_8')
+token = os.getenv('TOKEN')
+bot.run(token)

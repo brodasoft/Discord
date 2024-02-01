@@ -35,16 +35,19 @@ async def on_message(message):
         return
   
     if channel == "random": 
-                    
         if user_message.lower() == "hello" or user_message.lower() == "hi": 
             await message.channel.send(f'Hello {username}') 
             return
         elif user_message.lower() == "bye": 
             await message.channel.send(f'Bye {username}') 
+            return
         elif user_message.lower() == "tell me a joke": 
-            jokes = ["1","2","3","4"] 
-            await message.channel.send(random.choice(jokes)) 
-
+            jokes = ["1", "2", "3", "4"] 
+            await message.channel.send(random.choice(jokes))
+            return
+        elif "spadaj" in user_message.lower():
+            await message.channel.send(f'Ty tez spadaj, {username}!')
+            return
 
 # Run the bot with your bot token
 token = os.getenv('TOKEN')

@@ -3,6 +3,7 @@ import random
 import os
 from discord.ext import commands
 from dotenv import load_dotenv
+import youtube_dl
 
 intents = discord.Intents.default()
 intents.all()
@@ -11,6 +12,7 @@ intents.message_content = True
 load_dotenv()
 
 bot = commands.Bot(command_prefix='!', intents=intents)
+
 
 @bot.event
 async def on_ready():
@@ -44,8 +46,12 @@ async def on_message(message):
             await mute_all_users(message)
         elif user_message.lower() == '!uma':
             await unmute_all_users(message)
+        
 
     await bot.process_commands(message)
+
+
+                                                            #SERVER_NAME
 
 @bot.command(name='changeservername', help='Change the server name')
 async def change_server_name(ctx, new_name):
@@ -67,6 +73,8 @@ async def change_server_name(ctx, new_name):
         print(f'An error occurred: {e}')
         await ctx.send(f'An error occurred while changing the server name: {e}. Please check the bot\'s permissions.')
 
+                                                            #JOINING
+
 @bot.command(name='join', help='Join the voice channel')
 async def join_voice_channel(ctx):
     channel_name = "General"
@@ -78,6 +86,7 @@ async def join_voice_channel(ctx):
     else:
         await ctx.send(f'Voice channel {channel_name} not found.')
 
+                                                            #LEAVING
 @bot.command(name='leave', help='Leave the voice channel')
 async def leave_voice_channel(ctx):
     voice_channel = discord.utils.get(bot.voice_clients, guild=ctx.guild)
@@ -88,9 +97,33 @@ async def leave_voice_channel(ctx):
     else:
         await ctx.send('Not currently in a voice channel.')
 
+                                                            #MUTING
+
+@bot.command(name='mute', help='Mute a specific user')
+async def mute_user(ctx, member: discord.Member):
+    if ctx.author.voice and member.voice:
+        await member.edit(mute=True)
+        await ctx.send(f'{member.display_name} has been muted.')
+    else:
+        await ctx.send('Both you and the target user need to be in a voice channel.')
+
+                                                            #UNMUTING
+@bot.command(name='unmute', help='Unmute a specific user')
+async def unmute_user(ctx, member: discord.Member):
+    if ctx.author.voice and member.voice:
+        await member.edit(mute=False)
+        await ctx.send(f'{member.display_name} has been unmuted.')
+    else:
+        await ctx.send('Both you and the target user need to be in a voice channel.')
+
+
+                                                            #VC_MUTING
 @bot.command(name='ma', help='Mute all users on the voice channel')
+
 async def mute_all_users(ctx):
     await mute_all_users_on_channel(ctx)
+
+                                                            #VC_UNMUTING
 
 @bot.command(name='uma', help='Unmute all users on the voice channel')
 async def unmute_all_users(ctx):
@@ -115,6 +148,8 @@ async def unmute_all_users_on_channel(ctx):
         await ctx.send('Unmuted all users on the voice channel')
     else:
         await ctx.send('Bot is not currently in a voice channel.')
+
+
 
 token = os.getenv('TOKEN')
 bot.run(token)

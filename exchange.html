@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<html>
+<head>
+    <title>Cantor</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <form id="exchange_form" action="{{ url_for('exchange') }}" method="POST">
+        <label for="currency">Currency</label>
+        <input type="text" id="currency" name="currency" value="EUR"><br>
+        <label for="amount">Amount</label>
+        <input type="text" id="amount" name="amount" value="100"><br>
+        <input type="submit" value="Send">
+    </form>
+</body>
+</html>
